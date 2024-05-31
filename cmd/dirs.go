@@ -4,10 +4,10 @@ Copyright © 2024 Tom Wilson <t.wilson6@exeter.ac.uk>
 package cmd
 
 import (
-	log "github.com/sirupsen/logrus"
-
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/tomw66/golangcliscaffold/common"
+	"github.com/tomw66/golangcliscaffold/dirs"
 )
 
 // filesCmd represents the files command
@@ -16,11 +16,11 @@ var dirsCmd = &cobra.Command{
 	Short: "Show the largest directories in the given path.",
 	Long: `Quickly scan a directory and find large directories. Use the flags below to target the output.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		for key, value := range viper.GetViper().AllSettings() {
-		 log.WithFields(log.Fields{
-		  key: value,
-		 }).Info("Command Flag")
+		if Debug {
+			common.LogFlags()
 		}
+		dirsFound, _ := dirs.ReadDirDepth(Path)
+		dirs.PrintResults(dirsFound)
 	},
 }
 

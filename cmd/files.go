@@ -4,7 +4,10 @@ Copyright © 2024 Tom Wilson <t.wilson6@exeter.ac.uk>
 package cmd
 
 import (
-	log "github.com/sirupsen/logrus"
+	"fmt"
+
+	"github.com/tomw66/golangcliscaffold/common"
+	"github.com/tomw66/golangcliscaffold/files"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -14,13 +17,23 @@ import (
 var filesCmd = &cobra.Command{
 	Use:   "files",
 	Short: "Show the largest files in the given path.",
-	Long: `Quickly scan a directory and find large files.`,
+	Long: `Quickly scan a directory and find large files. . Use the flags below to target the output.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		for key, value := range viper.GetViper().AllSettings() {
-		 log.WithFields(log.Fields{
-		  key: value,
-		 }).Info("Command Flag")
+		if Debug {
+			common.LogFlags()
 		}
+		filesFound, err := files.ReadDirRecursively(Path)
+
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		if Filecount > len(filesFound) {
+			Filecount = len(filesFound)
+		}
+		filesFound = filesFound[0:Filecount]
+		files.PrintResults(filesFound)
 	},
 }
 

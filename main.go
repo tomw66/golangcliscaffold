@@ -1,6 +1,5 @@
 /*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-
+Copyright © 2024 Tom Wilson <t.wilson6@exeter.ac.uk>
 */
 package main
 
